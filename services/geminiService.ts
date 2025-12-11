@@ -58,10 +58,15 @@ export const analyzeBotContent = async (text: string): Promise<BotCheckResult> =
 export const generateNewsFeed = async (topic?: string | null): Promise<Article[]> => {
   try {
     const ai = getClient();
+    const now = new Date();
+    const todayStr = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    const isoNow = now.toISOString();
     
-    let basePrompt = `Generate 6 realistic, high-contrast news summaries for Bangladesh today.`;
+    let basePrompt = `Generate 6 realistic, high-contrast news summaries for Bangladesh. CURRENT DATE AND TIME: ${todayStr}.
+    IMPORTANT: You must assume the current time is exactly ${todayStr}. Ensure at least 2 articles are from "today" or "just now" (last few hours).`;
+    
     if (topic) {
-        basePrompt = `Generate a timeline of news specifically about "${topic}". Include 2 recent, 2 from last month, 2 from last year.`;
+        basePrompt = `Generate a timeline of news specifically about "${topic}". CURRENT DATE: ${todayStr}. Include 2 recent (as of ${todayStr}), 2 from last month, 2 from last year.`;
     }
 
     const prompt = `${basePrompt}
@@ -77,6 +82,7 @@ export const generateNewsFeed = async (topic?: string | null): Promise<Article[]
 
     Response format: JSON Array of Articles.
     Sources must include an 'ownership' field (e.g. "Beximco", "Jamuna Group", "State").
+    For timestamps, use strict ISO 8601 format (e.g. "${isoNow}"). Vary the timestamps slightly for 'recent' news.
     `;
 
     const response = await ai.models.generateContent({
@@ -138,13 +144,16 @@ export const generateNewsFeed = async (topic?: string | null): Promise<Article[]
 export const generateEntityReport = async (topic: string): Promise<EntityReport | null> => {
   try {
     const ai = getClient();
+    const now = new Date();
+    const todayStr = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    const isoNow = now.toISOString();
     
-    const prompt = `Generate a Media Intelligence Report for "${topic}" in Bangladesh.
+    const prompt = `Generate a Media Intelligence Report for "${topic}" in Bangladesh. CURRENT DATE: ${todayStr}.
     
     1. **Narratives**: Identify the "Dominant Narrative" (what mainstream says) and "Counter Narrative" (what opposition/social media says).
     2. **Bias Dist**: Percentage coverage by PRO_AL, PRO_BNP, PRO_JAMAAT, INDIA, NEUTRAL.
     3. **Bot Activity**: 0-100 score.
-    4. **Articles**: 6 articles (include Dark Pool stories if relevant).
+    4. **Articles**: 6 articles (include Dark Pool stories if relevant). ensure timestamps are accurate relative to ${isoNow}.
     `;
 
     const response = await ai.models.generateContent({

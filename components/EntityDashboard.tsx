@@ -28,7 +28,7 @@ const Sparkline: React.FC<{ data: { date: string; value: number }[] }> = ({ data
 };
 
 const NarrativeCard: React.FC<{ title: string; narrative: any; color: string }> = ({ title, narrative, color }) => (
-    <div className={`p-4 rounded-xl border border-gray-700 bg-gray-800/40 relative overflow-hidden`}>
+    <div className={`p-4 rounded-xl border border-gray-700 bg-gray-800/40 backdrop-blur-sm relative overflow-hidden`}>
         <div className={`absolute left-0 top-0 bottom-0 w-1 ${color}`}></div>
         <h4 className="text-gray-400 text-xs font-bold uppercase tracking-wider mb-2">{title}</h4>
         <h3 className="text-white font-bold text-lg mb-2">"{narrative.name}"</h3>
@@ -74,7 +74,7 @@ const EntityDashboard: React.FC<EntityDashboardProps> = ({ report }) => {
     <div className="space-y-8 animate-fade-in">
       
       {/* Top Intelligence Card */}
-      <div className="bg-brand-card border border-gray-700 rounded-xl p-6 shadow-xl relative overflow-hidden">
+      <div className="bg-brand-card/90 backdrop-blur-md border border-gray-700 rounded-xl p-6 shadow-xl relative overflow-hidden">
         <div className="absolute top-0 right-0 p-4 opacity-10">
           <Activity className="w-32 h-32 text-brand-accent" />
         </div>
@@ -120,20 +120,22 @@ const EntityDashboard: React.FC<EntityDashboardProps> = ({ report }) => {
                     <div className="text-xs text-gray-500 uppercase font-bold mb-2">Bias Distribution</div>
                     <div className="flex h-2 rounded-full overflow-hidden w-full bg-gray-800">
                         {Object.entries(report.biasDistribution || {}).map(([bias, val]) => (
-                            val > 0 && <div key={bias} style={{ width: `${val}%` }} 
+                            (val as number) > 0 && <div key={bias} style={{ width: `${val}%` }} 
                             className={`h-full ${
-                                bias === 'PRO_AL' ? 'bg-green-600' : 
+                                bias === 'PRO_AL' ? 'bg-emerald-600' : 
                                 bias === 'PRO_BNP' ? 'bg-orange-600' :
-                                bias === 'PRO_JAMAAT' ? 'bg-emerald-800' :
-                                bias === 'PRO_STUDENT' ? 'bg-red-500' :
-                                bias === 'INDIA' ? 'bg-orange-400' :
-                                'bg-gray-500'
+                                bias === 'PRO_JAMAAT' ? 'bg-teal-600' :
+                                bias === 'PRO_STUDENT' ? 'bg-rose-600' :
+                                bias === 'INDIA' ? 'bg-amber-600' :
+                                bias === 'STATE' ? 'bg-cyan-700' :
+                                bias === 'WESTERN' ? 'bg-blue-600' :
+                                'bg-gray-600'
                             }`} title={`${bias}: ${val}%`}></div>
                         ))}
                     </div>
                     <div className="flex flex-wrap gap-2 mt-2">
                         {Object.entries(report.biasDistribution || {}).map(([bias, val]) => (
-                             val > 10 && <span key={bias} className="text-[10px] text-gray-400">{bias.replace('PRO_', '')}: {val}%</span>
+                             (val as number) > 10 && <span key={bias} className="text-[10px] text-gray-400">{bias.replace('PRO_', '')}: {val as number}%</span>
                         ))}
                     </div>
                   </div>
@@ -152,7 +154,7 @@ const EntityDashboard: React.FC<EntityDashboardProps> = ({ report }) => {
 
       {/* Dark Pool Alerts */}
       {report.articles.some(a => a.isDarkPool) && (
-          <div className="bg-purple-900/20 border border-purple-500/50 rounded-xl p-4">
+          <div className="bg-purple-900/20 border border-purple-500/50 rounded-xl p-4 backdrop-blur-sm">
               <div className="flex items-center gap-2 mb-3">
                   <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></div>
                   <h3 className="font-bold text-purple-200">Dark Pool Detect: Viral on FB, Ignored by Media</h3>

@@ -95,12 +95,21 @@ const App: React.FC = () => {
     .filter(a => filterBlindspot === 'ALL' ? true : a.blindspot === filterBlindspot);
 
   return (
-    <div className="min-h-screen font-sans pb-20 bg-brand-dark text-slate-100">
-      <nav className="sticky top-0 z-50 bg-brand-dark/95 backdrop-blur border-b border-gray-800">
+    <div 
+      className="min-h-screen font-sans pb-20 text-slate-100 selection:bg-brand-accent selection:text-brand-dark"
+      style={{
+        backgroundColor: '#0f172a',
+        backgroundImage: `linear-gradient(to bottom, rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.90)), url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop')`,
+        backgroundAttachment: 'fixed',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+      }}
+    >
+      <nav className="sticky top-0 z-50 bg-brand-dark/80 backdrop-blur-md border-b border-gray-800/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-2 cursor-pointer" onClick={() => handleTopicSelect(null)}>
-              <div className="bg-brand-accent w-8 h-8 rounded flex items-center justify-center font-black text-brand-dark">K</div>
+              <div className="bg-brand-accent w-8 h-8 rounded flex items-center justify-center font-black text-brand-dark shadow-lg shadow-brand-accent/20">K</div>
               <span className="text-xl font-bold tracking-tight text-white">Khoborer<span className="text-brand-accent">Goyenda</span></span>
             </div>
             
@@ -150,7 +159,7 @@ const App: React.FC = () => {
 
                 <div className="lg:col-span-1 space-y-6">
                     <SecureWhistleblower />
-                    <div className="bg-brand-card p-6 rounded-xl border border-gray-700">
+                    <div className="bg-brand-card/80 backdrop-blur-sm p-6 rounded-xl border border-gray-700">
                         <div className="flex items-center gap-2 mb-4 text-white font-bold">
                             <TrendingUp className="w-5 h-5 text-brand-accent" />
                             <h3>Narrative Watch</h3>
@@ -166,15 +175,15 @@ const App: React.FC = () => {
                 </div>
             </div>
 
-            <div className="border-t border-gray-800 pt-8">
+            <div className="border-t border-gray-800/50 pt-8">
                 <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
                     <h2 className="text-2xl font-bold text-white">Latest Intelligence</h2>
-                    <div className="flex items-center bg-gray-800 rounded-lg p-1 border border-gray-700">
+                    <div className="flex items-center bg-gray-800/80 rounded-lg p-1 border border-gray-700">
                         <span className="text-xs text-gray-400 px-2 uppercase font-bold">Filter Blindspots:</span>
                         <select 
                             value={filterBlindspot}
                             onChange={(e) => setFilterBlindspot(e.target.value)}
-                            className="bg-transparent text-sm text-white focus:outline-none p-1"
+                            className="bg-transparent text-sm text-white focus:outline-none p-1 [&>option]:bg-brand-card"
                         >
                             <option value="ALL">Show All</option>
                             <option value={Bias.PRO_AL}>Hidden by Pro-AL</option>
@@ -194,7 +203,7 @@ const App: React.FC = () => {
         )}
       </main>
 
-      <footer className="border-t border-gray-800 bg-brand-card mt-12">
+      <footer className="border-t border-gray-800/50 bg-brand-card/50 backdrop-blur-sm mt-12">
         <div className="max-w-7xl mx-auto px-4 py-8 text-center text-gray-500 text-sm">
             <p className="mb-2">Khoborer Goyenda &copy; 2025. Non-profit Initiative.</p>
             <p className="text-xs">Data verified by AI + Community. Not affiliated with any party.</p>
